@@ -1,5 +1,6 @@
 let AWS = require('aws-sdk');
 const ddb = new AWS.DynamoDB.DocumentClient();
+let uuid = require('uuid');
 let Auth = require('../Auth');
 
 exports.handler = function (event, context, callback) {
