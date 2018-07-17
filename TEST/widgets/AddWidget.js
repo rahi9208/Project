@@ -3,6 +3,7 @@ const ddb = new AWS.DynamoDB.DocumentClient();
 let Auth = require('../Auth');
 
 exports.handler = function (event, context, callback) {
+    
     Auth.wrap(event, callback, (username) => {
         let response = {
             "isBase64Encoded": 1,
