@@ -4,7 +4,7 @@ let uuid = require('uuid');
 let Auth = require('../Auth');
 
 exports.handler = function (event, context, callback) {
-    
+
     Auth.wrap(event, callback, (username) => {
         let response = {
             "isBase64Encoded": 1,
@@ -24,18 +24,25 @@ exports.handler = function (event, context, callback) {
         ddb.put({
             TableName: 'DashboardWidgets',
             Item: {
+                createdTime,
+                updatedTime,
                 username,
                 widgetId,
-                widgetType:widget.type,
-                data:widget.data
+                widgetType: widget.type,
+                data: widget.data
             }
         }, function (err, data) {
-            if(!err){
+            if (!err) {
                 console.log("Successfully saved widget of %s with id %s", username, widgetId);
                 response.body = response.body = JSON.stringify({
-                    widgetId
+                    createdTime,
+                    updatedTime,
+                    username,
+                    widgetId,
+                    widgetType: widget.type,
+                    data: widget.data
                 });
-            }else{
+            } else {
                 console.error("Error in saving widget of", username, err);
                 response.statusCode = 500;
                 response.body = err.message;
@@ -43,5 +50,5 @@ exports.handler = function (event, context, callback) {
             callback(null, response);
         });
     });
-    
+
 }
